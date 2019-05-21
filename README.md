@@ -1,4 +1,4 @@
-Java WkHtmlToPdf Wrapper
+Java WkHtmlToPdf Wrapper [![Build Status](https://travis-ci.org/jhonnymertz/java-wkhtmltopdf-wrapper.svg?branch=master)](https://travis-ci.org/jhonnymertz/java-wkhtmltopdf-wrapper)
 =========
 
 A Java based wrapper for the [wkhtmltopdf](http://wkhtmltopdf.org/) command line tool. As the name implies, it uses WebKit to convert HTML documents to PDFs.
@@ -12,40 +12,25 @@ Make sure you have Java Wrapper dependency added to your project.
 
 If you are using Gradle/Maven, see example below:
 
-##### Gradle
+#### Gradle
 In your `build.gradle`:
 ```groovy
-	allprojects {
-		repositories {
-			maven { url "https://jitpack.io" }
-		}
-	}
-	
-	dependencies {
-		compile 'com.github.jhonnymertz:java-wkhtmltopdf-wrapper:1.1.2-RELEASE'
-	}
+dependencies {
+    compile 'com.github.jhonnymertz:java-wkhtmltopdf-wrapper:1.1.10-RELEASE'
+}
 ```
 
-##### Maven
+#### Maven
 In your `pom.xml`:
 ```xml
-	<dependencies>
-		<dependency>
-			<groupId>com.github.jhonnymertz</groupId>
-			<artifactId>java-wkhtmltopdf-wrapper</artifactId>
-			<version>1.1.2-RELEASE</version>
-		</dependency>
-	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+<dependency>
+    <groupId>com.github.jhonnymertz</groupId>
+    <artifactId>java-wkhtmltopdf-wrapper</artifactId>
+    <version>1.1.10-RELEASE</version>
+</dependency>
 ```
 
-Usage
+Usage and Examples
 ------------
 ```
 Pdf pdf = new Pdf();
@@ -68,8 +53,8 @@ pdf.addTocParam(new Param("--xsl-style-sheet", "my_toc.xsl"));
 pdf.saveAs("output.pdf");
 ```
 
-Xvfb Support
-------------
+### Xvfb Support
+
 ```
 XvfbConfig xc = new XvfbConfig();
 xc.addParams(new Param("--auto-servernum"), new Param("--server-num=1"));
@@ -82,6 +67,35 @@ pdf.addPageFromUrl("http://www.google.com");
 
 pdf.saveAs("output.pdf");
 ```
+
+### wkhtmltopdf exit codes
+
+wkhtmltopdf may return non-zero exit codes to denote warnings, you can now set the Pdf object to allow this:
+```
+
+Pdf pdf = new Pdf(wc);
+pdf.addPageFromUrl("http://www.google.com");
+
+pdf.setAllowMissingAssets();
+// or:  
+pdf.setSuccessValues(Arrays.asList(0, 1));
+
+pdf.saveAs("output.pdf");
+```
+
+This is not an official Wkhtmltopdf product
+------------
+This library is not an official Wkhtmltopdf product. Support is available on a best-effort basis via github issue tracking. Pull requests are welcomed.
+
+Bugs
+------------
+- Tests are incomplete
+
+Known issues
+------------
+
+**Output of wkhtmltopdf is being added to resulting pdf** ([Issue #19](https://github.com/jhonnymertz/java-wkhtmltopdf-wrapper/issues/19))
+- Starting from 1.1.10-RELEASE version, there is a method `saveAsDirect(String path)`, which executes wkhtmltopdf passing the `path` as output for wkhtmltopdf, instead of the standard input `-`. This saves the results directly to the specified file `path`.
 
 License
 ------------
